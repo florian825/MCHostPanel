@@ -33,6 +33,13 @@ if($_POST['action'] == 'backup-manage' && $_POST['user']) {
 if ($_POST['action'] == 'user-add')
 	user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
 
+// delete users
+if ($_POST['action'] == 'user-delete' && $_POST['user']) {
+	if ( $_SESSION['user'] != $_POST['user']){
+		user_delete($_POST['user']);	
+	} 	
+}
+
 // Start a server
 if ($_POST['action'] == 'server-start') {
 	$stu = user_info($_POST['user']);
@@ -267,6 +274,19 @@ if ($_POST['action'] == 'server-stop')
 					</div>
 				</div>
 				<button type="submit" class="btn btn-primary">Add User</button>
+			</form>
+			<form action="admin.php" method="post">
+				<legend>Delete User</legend>
+				<input type="hidden" name="action" value="user-delete">
+				<select name="user" style="vertical-align: top;">
+					<?php
+    					$ul = user_list();
+    					foreach ($ul as $u)
+    						if($u != "empty")
+    							echo '<option value="' . $u . '">' . $u . '</option>';
+    					?>
+				</select>
+				<button type="submit" class="btn btn-danger">Delete</button>
 			</form>
 		</div>
 	</div>
